@@ -61,7 +61,7 @@ interface McpToolExport {
 const SEARCH_URL = 'https://api.hankintailmoitukset.fi/avp/notices/docs/search';
 const SITE_URL = 'https://www.hankintailmoitukset.fi/';
 const SIGNUP_URL = 'https://hns-hilma-prod-apim.developer.azure-api.net';
-const SOURCE = `Hilma — Finland's national public procurement notice service (${SITE_URL})`;
+const SOURCE = `Hilma — Finland's national public procurement notice service (${SITE_URL}). Free open-data (avp-read) index — a historical archive, not a live feed.`;
 const UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 const TIMEOUT_MS = 8000;
@@ -399,7 +399,24 @@ async function recent(args: Record<string, unknown>, apiKey: string): Promise<un
     exclude_plans: args.exclude_plans,
   });
   const data = await postSearch(body, apiKey);
-  return { days, since: sinceIso, ...shapeResponse(data, body.top, 0) };
+  const shaped = shapeResponse(data, body.top, 0) as Record<string, unknown>;
+  // The free avp-read open-data index is a historical archive that is not
+  // updated in real time — its newest notice currently predates "the last N
+  // days", so a naive recent() looks broken (0 hits). Rather than dead-end,
+  // report the newest notice the index actually holds so the caller knows the
+  // data's currency and can query hilma_search within that range instead.
+  if ((shaped.count as number) === 0) {
+    let latest: string | null = null;
+    try {
+      const probe = await postSearch(buildBody({ top: 1, orderby: 'datePublished desc' }), apiKey);
+      const first = Array.isArray(probe.value) ? (probe.value[0] as Record<string, unknown>) : null;
+      latest = (first?.datePublished as string) ?? null;
+    } catch { /* best-effort; leave latest null */ }
+    shaped.note = latest
+      ? `No notices published in the last ${days} days. Hilma's free open-data (avp-read) index is a historical archive, not a live feed — its most recent notice is dated ${latest.slice(0, 10)}. Use hilma_search with published dates on or before then for results.`
+      : `No notices in the last ${days} days; the free open-data index may not include very recent notices.`;
+  }
+  return { days, since: sinceIso, ...shaped };
 }
 
 async function noticeLookup(args: Record<string, unknown>, apiKey: string): Promise<unknown> {

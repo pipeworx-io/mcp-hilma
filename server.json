@@ -3,7 +3,7 @@
   "name": "io.github.pipeworx-io/hilma",
   "title": "Hilma",
   "description": "Hilma MCP — Finnish government public procurement notices (keyed).",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://pipeworx.io/packs/hilma",
   "repository": {
     "url": "https://github.com/pipeworx-io/mcp-hilma",
