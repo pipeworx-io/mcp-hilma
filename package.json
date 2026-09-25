@@ -1,20 +1,32 @@
 {
   "name": "@pipeworx/mcp-hilma",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Hilma MCP — Finnish government public procurement notices (keyed).",
   "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "bin": {
+    "mcp-hilma": "bin/cli.js"
+  },
   "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "hilma"],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pipeworx-io/mcp-hilma"
+    "url": "git+https://github.com/pipeworx-io/mcp-hilma.git"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "tsx": "^4.19.0"
+  },
   "devDependencies": {
-    "typescript": "^5.7.0"
+    "typescript": "^5.9.3",
+    "@cloudflare/workers-types": "^4.20260405.1"
+  },
+  "pipeworx": {
+    "sourceHash": "v1-1644e69a94b21ac999166085136457e32095cf53938e8f0392ed2129cdb37e6d",
+    "sourceCommit": "76aa8f5d9b5dc2f665563030647c68e661478864"
   }
 }
