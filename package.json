@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-hilma",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Hilma MCP — Finnish government public procurement notices (keyed).",
   "type": "module",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
     "mode": "gateway",
     "slug": "hilma",
     "gatewaySlug": "hilma",
-    "sourceHash": "v1-243836ba4db005ec7d0883a8b976fc40010c6ac946dfff31611b00537f2cbd1d",
-    "sourceCommit": "4844029e402d6bd2fe735add8abf6d46735f8ed5"
+    "sourceHash": "v1-fd86ef0a9d9d901d5aee2a2dd2a9ebfa272b0a6689033ea230ecce81c40e5a0f",
+    "sourceCommit": "0ca9712c0ac03bb0121cc7e81b202d0c45ac02ca"
   }
 }
